@@ -8,11 +8,12 @@ namespace gowa.Models
     public class Car
     {
         public int CarID { get; set; }
-        public string Brand { get; set; }
+        public string BrandID { get; set; }
         public string Model { get; set; }
         public int HorsePower { get; set; }
         public int CarWorkShopID { get; set; }
 
         public virtual Workshop Workshop { get; set; }
+        public virtual Brand Brand { get; set; }
     }
 }
