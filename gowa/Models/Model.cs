@@ -11,7 +11,7 @@ namespace gowa.Models
         public string Name { get; set; }
         public int BrandID { get; set; }
 
-        public virtual Brand Brand { get; set; }
+        public virtual ICollection<Brand> Brand { get; set; }
         public virtual ICollection<Car> Car { get; set; }
     }
 }
