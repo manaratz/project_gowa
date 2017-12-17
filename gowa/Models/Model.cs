@@ -5,13 +5,13 @@ using System.Web;
 
 namespace gowa.Models
 {
-    public class Workshop
+    public class Model
     {
-        public int ID { get; set; }
-        public string Location { get; set; }
+        public int ModelID { get; set; }
         public string Name { get; set; }
+        public int BrandID { get; set; }
 
-
+        public virtual Brand Brand { get; set; }
         public virtual ICollection<Car> Car { get; set; }
     }
 }
