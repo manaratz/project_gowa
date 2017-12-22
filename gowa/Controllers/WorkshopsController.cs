@@ -8,72 +8,79 @@ using System.Web;
 using System.Web.Mvc;
 using gowa.DAL;
 using gowa.Models;
+using gowa.ViewModels;
 
 namespace gowa.Controllers
 {
-    public class CarsController : Controller
+    public class WorkshopsController : Controller
     {
         private GarageContext db = new GarageContext();
 
-        // GET: Cars
-        public ActionResult Index(string sortOrder)
+        // GET: Workshops
+        public ActionResult Index(int? id, string sortOrder)
         {
             ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.LocationSortParm = string.IsNullOrEmpty(sortOrder) ? "location_desc" : "";
-            ViewBag.PowerSortParm = string.IsNullOrEmpty(sortOrder) ? "power_desc" : "";
-            var cars = db.Cars.Include(c => c.Model).Include(c => c.Workshop);
-            switch (sortOrder)
+            var viewModel = new WorkshopIndexData();
+            switch(sortOrder)
             {
                 case "name_desc":
-                    cars = cars.OrderByDescending(c => c.Model.Name);
+                    viewModel.Workshops = db.Workshops
+                        .Include(i => i.Car)
+                        .OrderByDescending(i => i.Name);
                     break;
                 case "location_desc":
-                    cars = cars.OrderByDescending(c => c.Workshop.Location);
-                    break;
-                case "power_desc":
-                    cars = cars.OrderByDescending(c => c.HorsePower);
+                    viewModel.Workshops = db.Workshops
+                        .Include(i => i.Car)
+                        .OrderByDescending(i => i.Location);
                     break;
                 default:
-                    cars = cars.OrderBy(c => c.Model.Name);
+                    viewModel.Workshops = db.Workshops
+                        .Include(i => i.Car)
+                        .OrderBy(i => i.Name);
                     break;
             }
-            return View(cars.ToList());
+
+            if(id != null)
+            {
+                ViewBag.WorkshopID = id.Value;
+                viewModel.Cars = viewModel.Workshops.Where(
+                    i => i.ID == id.Value).Single().Car;
+            }
+            return View(viewModel);
         }
 
-        // GET: Cars/Details/5
+        // GET: Workshops/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Car car = db.Cars.Find(id);
-            if (car == null)
+            Workshop workshop = db.Workshops.Find(id);
+            if (workshop == null)
             {
                 return HttpNotFound();
             }
-            return View(car);
+            return View(workshop);
         }
 
-        // GET: Cars/Create
+        // GET: Workshops/Create
         public ActionResult Create()
         {
-            ViewBag.ModelID = new SelectList(db.Models, "ModelID", "Name");
-            ViewBag.WorkShopID = new SelectList(db.Workshops, "ID", "Location");
             return View();
         }
 
-        // POST: Cars/Create
-       
+        // POST: Workshops/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "WorkShopID,ModelID,HorsePower")] Car car)
+        public ActionResult Create([Bind(Include = "Location,Name")] Workshop workshop)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    db.Cars.Add(car);
+                    db.Workshops.Add(workshop);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -82,29 +89,25 @@ namespace gowa.Controllers
             {
                 ModelState.AddModelError("", "Unable to save changes.");
             }
-            ViewBag.ModelID = new SelectList(db.Models, "ModelID", "Name", car.ModelID);
-            ViewBag.WorkShopID = new SelectList(db.Workshops, "ID", "Location", car.WorkShopID);
-            return View(car);
+            return View(workshop);
         }
 
-        // GET: Cars/Edit/5
+        // GET: Workshops/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Car car = db.Cars.Find(id);
-            if (car == null)
+            Workshop workshop = db.Workshops.Find(id);
+            if (workshop == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ModelID = new SelectList(db.Models, "ModelID", "Name", car.ModelID);
-            ViewBag.WorkShopID = new SelectList(db.Workshops, "ID", "Location", car.WorkShopID);
-            return View(car);
+            return View(workshop);
         }
 
-        // POST: Cars/Edit/5
+        // POST: Workshops/Edit/5
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public ActionResult EditPost(int? id)
@@ -113,8 +116,8 @@ namespace gowa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var carToUpdate = db.Cars.Find(id);
-            if (TryUpdateModel(carToUpdate, "",new string[] { "ModelID", "WorkShopID", "HorsePower" }))
+            var workshopToUpdate = db.Workshops.Find(id);
+            if (TryUpdateModel(workshopToUpdate, "", new string[] { "Name","Location" }))
             {
                 try
                 {
@@ -122,17 +125,15 @@ namespace gowa.Controllers
 
                     return RedirectToAction("Index");
                 }
-                catch(DataException)
+                catch (DataException)
                 {
                     ModelState.AddModelError("", "Unable to save changes.");
                 }
             }
-            ViewBag.ModelID = new SelectList(db.Models, "ModelID", "Name", carToUpdate.ModelID);
-            ViewBag.WorkShopID = new SelectList(db.Workshops, "ID", "Location", carToUpdate.WorkShopID);
-            return View(carToUpdate);
+            return View(workshopToUpdate);
         }
 
-        // GET: Cars/Delete/5
+        // GET: Workshops/Delete/5
         public ActionResult Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
@@ -143,28 +144,28 @@ namespace gowa.Controllers
             {
                 ViewBag.ErrorMessage = "Delete failed";
             }
-            Car car = db.Cars.Find(id);
-            if (car == null)
+            Workshop workshop = db.Workshops.Find(id);
+            if (workshop == null)
             {
                 return HttpNotFound();
             }
-            return View(car);
+            return View(workshop);
         }
 
-        // POST: Cars/Delete/5
+        // POST: Workshops/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             try
             {
-                Car car = db.Cars.Find(id);
-                db.Cars.Remove(car);
+                Workshop workshop = db.Workshops.Find(id);
+                db.Workshops.Remove(workshop);
                 db.SaveChanges();
             }
-            catch(DataException)
+            catch (DataException)
             {
-                return RedirectToAction("Delete", new { id = id, saveChangesError= true });
+                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
             }
 
             return RedirectToAction("Index");

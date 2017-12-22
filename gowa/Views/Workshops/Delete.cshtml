@@ -1,4 +1,4 @@
-﻿@model gowa.Models.Car
+﻿@model gowa.Models.Workshop
 
 @{
     ViewBag.Title = "Delete";
@@ -8,31 +8,23 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Car</h4>
+    <h4>Workshop</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Model.Name)
+            @Html.DisplayNameFor(model => model.Location)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Model.Name)
+            @Html.DisplayFor(model => model.Location)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Workshop.Location)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Workshop.Location)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.HorsePower)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.HorsePower)
+            @Html.DisplayFor(model => model.Name)
         </dd>
 
     </dl>

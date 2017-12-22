@@ -10,37 +10,20 @@ namespace gowa.DAL
     {
         protected override void Seed(GarageContext context)
         {
-            var brands = new List<Brand>
-            {
-                new Brand{Name="Renault"},
-                new Brand{Name="Mercedes-Benz"},
-                new Brand{Name="Volkswagen"},
-                new Brand{Name="Alfa Roméo"},
-                new Brand{Name="Fiat"},
-                new Brand{Name="Ford"},
-                new Brand{Name="Peugeot"},
-                new Brand{Name="Citroên"},
-                new Brand{Name="B.M.W."},
-                new Brand{Name="Honda"},
-                new Brand{Name="Toyota"},
-                new Brand{Name="Audi"}
-            };
-            brands.ForEach(b => context.Brands.Add(b));
-            context.SaveChanges();
             var models = new List<Model>
             {
-                new Model{Name="Clio",BrandID=1},
-                new Model{Name="A-Class",BrandID=2},
-                new Model{Name="Golf",BrandID=3},
-                new Model{Name="Giulia",BrandID=4},
-                new Model{Name="500",BrandID=5},
-                new Model{Name="Focus",BrandID=6},
-                new Model{Name="308",BrandID=7},
-                new Model{Name="C3",BrandID=8},
-                new Model{Name="X5",BrandID=9},
-                new Model{Name="Civic",BrandID=10},
-                new Model{Name="Aygo",BrandID=11},
-                new Model{Name="RS3",BrandID=12}
+                new Model{Name="Renault - Clio"},
+                new Model{Name="Mercedes-Benz - A Class"},
+                new Model{Name="Volkswagen - Golf"},
+                new Model{Name="Alfa Roméo - Giulia"},
+                new Model{Name="Fiat - 500"},
+                new Model{Name="Ford - Focus"},
+                new Model{Name="Peugeot - 308"},
+                new Model{Name="Citroën - C3"},
+                new Model{Name="B.M.W. - X5"},
+                new Model{Name="Honda - Civic"},
+                new Model{Name="Toyota - Aygo"},
+                new Model{Name="Audi - RS3"}
             };
             models.ForEach(m => context.Models.Add(m));
             context.SaveChanges();
@@ -49,7 +32,7 @@ namespace gowa.DAL
             {
                 new Workshop{Name="Park it",Location="Paris"},
                 new Workshop{Name="Car Wars",Location="Marseille"},
-                new Workshop{Name="Kammthaar",Location="Strasbrourg"},
+                new Workshop{Name="Kammthaar",Location="Strabrourg"},
                 new Workshop{Name="Carputer",Location="Toulouse"},
                 new Workshop{Name="Cardealogist",Location="Lyon"}
             };
@@ -58,7 +41,7 @@ namespace gowa.DAL
 
             var cars = new List<Car>
             {
-                new Car{BrandID=1, HorsePower=90, ModelID=1,WorkShopID=1}
+                new Car{HorsePower=90, ModelID=1,WorkShopID=1}
             };
             cars.ForEach(c => context.Cars.Add(c));
             context.SaveChanges();

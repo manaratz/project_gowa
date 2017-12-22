@@ -9,9 +9,7 @@ namespace gowa.Models
     {
         public int ModelID { get; set; }
         public string Name { get; set; }
-        public int BrandID { get; set; }
 
-        public virtual ICollection<Brand> Brand { get; set; }
         public virtual ICollection<Car> Car { get; set; }
     }
 }

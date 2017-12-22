@@ -1,36 +1,25 @@
 ﻿@model IEnumerable<gowa.Models.Car>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Cars";
 }
 
-<h2>Index</h2>
+<h2>Cars</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Brand.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Workshop.Location)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HorsePower)
-        </th>
+        <th>@Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })</th>
+        <th>@Html.ActionLink("Location", "Index", new { sortOrder = ViewBag.LocationSortParm })</th>
+        <th>@Html.ActionLink("Horse Power", "Index", new { sortOrder = ViewBag.PowerSortParm })</th>
+
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Brand.Name)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Model.Name)
         </td>
