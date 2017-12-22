@@ -32,7 +32,7 @@ namespace gowa.DAL
             {
                 new Workshop{Name="Park it",Location="Paris"},
                 new Workshop{Name="Car Wars",Location="Marseille"},
-                new Workshop{Name="Kammthaar",Location="Strabrourg"},
+                new Workshop{Name="Kammthaar",Location="Strasbourg"},
                 new Workshop{Name="Carputer",Location="Toulouse"},
                 new Workshop{Name="Cardealogist",Location="Lyon"}
             };
